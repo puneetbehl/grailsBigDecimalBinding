@@ -22,16 +22,24 @@ class BookController {
         respond new Book(params)
     }
 
-    def save(Book book) {
-        if (book == null) {
+    def save(BookCo bookCo) {
+        if (bookCo == null) {
             notFound()
             return
         }
 
+        println ">>>>" + bookCo.price
+        Book book = new Book(
+                title: bookCo.title,
+                author: bookCo.author,
+                releaseDate: bookCo.releaseDate,
+                price: bookCo.price
+        )
+
         try {
             bookService.save(book)
         } catch (ValidationException e) {
-            respond book.errors, view:'create'
+            respond bookCo.errors, view:'create'
             return
         }
 
